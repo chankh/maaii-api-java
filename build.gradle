@@ -1,0 +1,56 @@
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    group = 'com.m800'
+    version = '1.2'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+project(':m800-api-client') {
+
+    ext {
+        guavaVersion = "19.+"
+        jacksonVersion = "2.+"
+        jerseyVersion = "2.+"
+        mockitoVersion = "1.9.+"
+        testngVersion = "6.+"
+    }
+
+    dependencies {
+        compile "com.google.guava:guava:$guavaVersion"
+
+        // Jackson
+        compile "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+        compile "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
+        compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+        compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion"
+
+        // Jersey client
+        compile "org.glassfish.jersey.core:jersey-client:$jerseyVersion"
+        compile "org.glassfish.jersey.core:jersey-common:$jerseyVersion"
+        compile "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion"
+        compile "org.glassfish.jersey.connectors:jersey-grizzly-connector:$jerseyVersion"
+
+        // Test dependencies
+        testCompile group: 'org.testng', name: 'testng', version: testngVersion
+        testCompile group: 'org.mockito', name: 'mockito-all', version: mockitoVersion
+    }
+
+}
+
+project(':samples') {
+    ext {
+        commonsCliVersion = "1.+"
+    }
+
+    dependencies {
+        compile "commons-cli:commons-cli:$commonsCliVersion"
+        compile project(":m800-api-client")
+    }
+}
